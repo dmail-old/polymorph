@@ -1,0 +1,18 @@
+{
+	"name": "@dmail/polymorph",
+	"version": "0.0.1",
+	"license": "UNLICENSED",
+	"dependencies": {
+
+	},
+	"devDependencies": {
+		"system-test": "git+https://github.com/dmail/system-test"
+	},
+	"scripts": {
+		"test": "system-test"
+	},
+	"repository": {
+	    "type": "git",
+	    "url": "https://github.com/dmail/polymorph"
+	}
+}
