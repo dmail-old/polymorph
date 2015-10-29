@@ -21,18 +21,6 @@ export function suite(add){
 		test.calledWith(third, 'foo', 'bar');
 	});
 
-	add("no signature found throw TypeError", function(test){
-		var fn = polymorph();
-
-		try{
-			fn();
-			throw new Error('error was expected');
-		}
-		catch(e){
-			test.equal(e.name, 'TypeError');
-		}
-	}).skip();
-
 	add("signature support primitives", function(test){
 		var boolean = test.spy();
 		var string = test.spy();
@@ -119,5 +107,78 @@ export function suite(add){
 
 		fn('foo', 'bar');
 		test.calledWith(first, 'foo', 'bar');
+	});
+
+	add("Error code EMPTY_SIGNATURE", function(test){
+		var fn = polymorph();
+
+		try{
+			fn();
+			throw new Error('error was expected');
+		}
+		catch(e){
+			test.equal(e.code, 'EMPTY_SIGNATURE');
+		}
+	});
+
+	add("Error code EMPTY_SIGNATURE", function(test){
+		var fn = polymorph();
+
+		try{
+			fn();
+			throw new Error('error was expected');
+		}
+		catch(e){
+			test.equal(e.code, 'EMPTY_SIGNATURE');
+		}
+	});
+
+	add("Error code NOT_ENOUGH_ARGUMENT", function(test){
+		var fn = polymorph(
+			function(a){
+
+			}
+		);
+
+		try{
+			fn();
+			throw new Error('error was expected');
+		}
+		catch(e){
+			test.equal(e.code, 'NOT_ENOUGH_ARGUMENT');
+		}
+	});
+
+	add("Error code TOO_MUCH_ARGUMENT", function(test){
+		var fn = polymorph(
+			function(){
+
+			}
+		);
+
+		try{
+			fn('foo');
+			throw new Error('error was expected');
+		}
+		catch(e){
+			test.equal(e.code, 'TOO_MUCH_ARGUMENT');
+		}
+	});
+
+	add("Error code INVALID_ARGUMENT", function(test){
+		var fn = polymorph(
+			[String],
+			function(){
+
+			}
+		);
+
+		try{
+			fn(10);
+			throw new Error('error was expected');
+		}
+		catch(e){
+			test.equal(e.code, 'INVALID_ARGUMENT');
+		}
 	});
 }
