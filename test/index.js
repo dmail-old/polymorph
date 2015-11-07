@@ -2,6 +2,27 @@ import polymorph from '../index.js';
 
 export function suite(add){
 
+	add("sepcificity is respected", function(test){
+		var first = test.spy();
+		var second = test.spy();
+
+		var fn = polymorph(
+			[String],
+			function(a){
+				first(a);
+			},
+
+			[],
+			function(a){
+				second(a);
+			}
+		);
+
+		fn('yo');
+
+		return test.calledWith(first, 'yo');
+	});
+
 	add("function bind", function(test){
 		var first = test.spy();
 		var bind = {};
