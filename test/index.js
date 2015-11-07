@@ -2,6 +2,19 @@ import polymorph from '../index.js';
 
 export function suite(add){
 
+	add("function bind", function(test){
+		var first = test.spy();
+		var bind = {};
+
+		var fn = polymorph(
+			function(){ first.call(this); }
+		);
+
+		fn.call(bind);
+
+		test.calledOn(first, bind);
+	});
+
 	add("function are called dependening of their arguments length", function(test){
 		var first = test.spy();
 		var second = test.spy();
