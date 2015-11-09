@@ -2,10 +2,10 @@ import polymorph from '../index.js';
 
 export function suite(add){
 
-	add("function are called dependening of their arguments length", function(test){
-		var first = test.spy();
-		var second = test.spy();
-		var third = test.spy();
+	add("function are called dependening of their arguments length", function(){
+		var first = this.spy();
+		var second = this.spy();
+		var third = this.spy();
 
 		var fn = polymorph(
 			function(){ first(); },
@@ -14,17 +14,17 @@ export function suite(add){
 		);
 
 		fn();
-		test.calledWith(first, undefined);
+		this.calledWith(first, undefined);
 		fn('foo');
-		test.calledWith(second, 'foo');
+		this.calledWith(second, 'foo');
 		fn('foo', 'bar');
-		test.calledWith(third, 'foo', 'bar');
+		this.calledWith(third, 'foo', 'bar');
 	});
 
-	add("signature support primitives", function(test){
-		var boolean = test.spy();
-		var string = test.spy();
-		var number = test.spy();
+	add("signature support primitives", function(){
+		var boolean = this.spy();
+		var string = this.spy();
+		var number = this.spy();
 
 		var fn = polymorph(
 			[Boolean],
@@ -39,13 +39,13 @@ export function suite(add){
 		fn('foo');
 		fn(10);
 
-		test.calledWith(boolean, true);
-		test.calledWith(string, 'foo');
-		test.calledWith(number, 10);
+		this.calledWith(boolean, true);
+		this.calledWith(string, 'foo');
+		this.calledWith(number, 10);
 	});
 
-	add("signature support instanceof", function(test){
-		var first = test.spy();
+	add("signature support instanceof", function(){
+		var first = this.spy();
 
 		var CustomConstructor = function(){};
 		var customConstructor = new CustomConstructor();
@@ -58,11 +58,11 @@ export function suite(add){
 		);
 
 		fn(customConstructor);
-		test.calledWith(first, customConstructor);
+		this.calledWith(first, customConstructor);
 	});
 
-	add("signature support isPrototypeOf", function(test){
-		var first = test.spy();
+	add("signature support isPrototypeOf", function(){
+		var first = this.spy();
 
 		var CustomObject = {};
 		var customObject = Object.create(CustomObject);
@@ -75,11 +75,11 @@ export function suite(add){
 		);
 
 		fn(customObject);
-		test.calledWith(first, customObject);
+		this.calledWith(first, customObject);
 	});
 
-	add("signature support any thanks to hole in the array", function(test){
-		var first = test.spy();
+	add("signature support any thanks to hole in the array", function(){
+		var first = this.spy();
 
 		var fn = polymorph(
 			[,String],
@@ -89,13 +89,13 @@ export function suite(add){
 		);
 
 		fn(true, 'bar');
-		test.calledWith(first, true, 'bar');
+		this.calledWith(first, true, 'bar');
 		fn(undefined, 'boo');
-		test.calledWith(first, undefined, 'boo');
+		this.calledWith(first, undefined, 'boo');
 	});
 
-	add('signature support rest params just not giving any schema to follow', function(test){
-		var first = test.spy();
+	add('signature support rest params just not giving any schema to follow', function(){
+		var first = this.spy();
 
 		var called = false;
 		var fn = polymorph(
@@ -106,10 +106,10 @@ export function suite(add){
 		);
 
 		fn('foo', 'bar');
-		test.calledWith(first, 'foo', 'bar');
+		this.calledWith(first, 'foo', 'bar');
 	});
 
-	add("Error code EMPTY_SIGNATURE", function(test){
+	add("Error code EMPTY_SIGNATURE", function(){
 		var fn = polymorph();
 
 		try{
@@ -117,11 +117,11 @@ export function suite(add){
 			throw new Error('error was expected');
 		}
 		catch(e){
-			test.equal(e.code, 'EMPTY_SIGNATURE');
+			this.equal(e.code, 'EMPTY_SIGNATURE');
 		}
 	});
 
-	add("Error code EMPTY_SIGNATURE", function(test){
+	add("Error code EMPTY_SIGNATURE", function(){
 		var fn = polymorph();
 
 		try{
@@ -129,11 +129,11 @@ export function suite(add){
 			throw new Error('error was expected');
 		}
 		catch(e){
-			test.equal(e.code, 'EMPTY_SIGNATURE');
+			this.equal(e.code, 'EMPTY_SIGNATURE');
 		}
 	});
 
-	add("Error code NOT_ENOUGH_ARGUMENT", function(test){
+	add("Error code NOT_ENOUGH_ARGUMENT", function(){
 		var fn = polymorph(
 			function(a){
 
@@ -145,11 +145,11 @@ export function suite(add){
 			throw new Error('error was expected');
 		}
 		catch(e){
-			test.equal(e.code, 'NOT_ENOUGH_ARGUMENT');
+			this.equal(e.code, 'NOT_ENOUGH_ARGUMENT');
 		}
 	});
 
-	add("Error code TOO_MUCH_ARGUMENT", function(test){
+	add("Error code TOO_MUCH_ARGUMENT", function(){
 		var fn = polymorph(
 			function(){
 
@@ -161,11 +161,11 @@ export function suite(add){
 			throw new Error('error was expected');
 		}
 		catch(e){
-			test.equal(e.code, 'TOO_MUCH_ARGUMENT');
+			this.equal(e.code, 'TOO_MUCH_ARGUMENT');
 		}
 	});
 
-	add("Error code INVALID_ARGUMENT", function(test){
+	add("Error code INVALID_ARGUMENT", function(){
 		var fn = polymorph(
 			[String],
 			function(){
@@ -178,7 +178,7 @@ export function suite(add){
 			throw new Error('error was expected');
 		}
 		catch(e){
-			test.equal(e.code, 'INVALID_ARGUMENT');
+			this.equal(e.code, 'INVALID_ARGUMENT');
 		}
 	});
 }
