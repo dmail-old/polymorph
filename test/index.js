@@ -2,7 +2,7 @@ import polymorph from '../index.js';
 
 export function suite(add){
 
-	add("specificity is respected", function(){
+	add("signature complexity is respected", function(){
 		var first = this.spy();
 		var second = this.spy();
 
@@ -23,7 +23,7 @@ export function suite(add){
 		return this.calledWith(first, 'yo');
 	});
 
-	add("function bind", function(){
+	add("function called with right bind", function(){
 		var first = this.spy();
 		var bind = {};
 
@@ -36,7 +36,7 @@ export function suite(add){
 		this.calledOn(first, bind);
 	});
 
-	add("function are called dependening of their arguments length", function(){
+	add("arguments length as signature", function(){
 		var first = this.spy();
 		var second = this.spy();
 		var third = this.spy();
@@ -55,7 +55,7 @@ export function suite(add){
 		this.calledWith(third, 'foo', 'bar');
 	});
 
-	add("signature support primitives", function(){
+	add("primitives in signature", function(){
 		var boolean = this.spy();
 		var string = this.spy();
 		var number = this.spy();
@@ -78,7 +78,7 @@ export function suite(add){
 		this.calledWith(number, 10);
 	});
 
-	add("signature support instanceof", function(){
+	add("instanceof in signature", function(){
 		var first = this.spy();
 
 		var CustomConstructor = function(){};
@@ -95,7 +95,7 @@ export function suite(add){
 		this.calledWith(first, customConstructor);
 	});
 
-	add("signature support isPrototypeOf", function(){
+	add("isPrototypeOf in signature", function(){
 		var first = this.spy();
 
 		var CustomObject = {};
@@ -112,7 +112,7 @@ export function suite(add){
 		this.calledWith(first, customObject);
 	});
 
-	add("signature support any thanks to hole in the array", function(){
+	add("'any' in signature (hole in the array)", function(){
 		var first = this.spy();
 
 		var fn = polymorph(
@@ -128,7 +128,7 @@ export function suite(add){
 		this.calledWith(first, undefined, 'boo');
 	});
 
-	add('signature support rest params just not giving any schema to follow', function(){
+	add('rest params in signature (schema left part is sufficient to match signature)', function(){
 		var first = this.spy();
 
 		var called = false;
@@ -145,26 +145,11 @@ export function suite(add){
 
 	add("Error code EMPTY_SIGNATURE", function(){
 		var fn = polymorph();
+		var spy = this.spy(fn);
 
-		try{
-			fn();
-			throw new Error('error was expected');
-		}
-		catch(e){
-			this.equal(e.code, 'EMPTY_SIGNATURE');
-		}
-	});
+		spy();
 
-	add("Error code EMPTY_SIGNATURE", function(){
-		var fn = polymorph();
-
-		try{
-			fn();
-			throw new Error('error was expected');
-		}
-		catch(e){
-			this.equal(e.code, 'EMPTY_SIGNATURE');
-		}
+		this.threw(spy, {code: 'EMPTY_SIGNATURE'});
 	});
 
 	add("Error code NOT_ENOUGH_ARGUMENT", function(){
@@ -173,14 +158,10 @@ export function suite(add){
 
 			}
 		);
+		var spy = this.spy(fn);
+		fn();
 
-		try{
-			fn();
-			throw new Error('error was expected');
-		}
-		catch(e){
-			this.equal(e.code, 'NOT_ENOUGH_ARGUMENT');
-		}
+		this.threw(spy, {code: 'NOT_ENOUGH_ARGUMENT'});
 	});
 
 	add("Error code TOO_MUCH_ARGUMENT", function(){
@@ -189,14 +170,10 @@ export function suite(add){
 
 			}
 		);
+		var spy = this.spy(fn);
+		fn('foo');
 
-		try{
-			fn('foo');
-			throw new Error('error was expected');
-		}
-		catch(e){
-			this.equal(e.code, 'TOO_MUCH_ARGUMENT');
-		}
+		this.threw(spy, {code: 'TOO_MUCH_ARGUMENT'});
 	});
 
 	add("Error code INVALID_ARGUMENT", function(){
@@ -206,13 +183,9 @@ export function suite(add){
 
 			}
 		);
+		var spy = this.spy(fn);
+		spy(10);
 
-		try{
-			fn(10);
-			throw new Error('error was expected');
-		}
-		catch(e){
-			this.equal(e.code, 'INVALID_ARGUMENT');
-		}
+		this.threw(spy, {code: 'INVALID_ARGUMENT'});
 	});
 }
