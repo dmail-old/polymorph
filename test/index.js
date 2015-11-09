@@ -2,6 +2,40 @@ import polymorph from '../index.js';
 
 export function suite(add){
 
+	add("specificity is respected", function(){
+		var first = this.spy();
+		var second = this.spy();
+
+		var fn = polymorph(
+			[String],
+			function(a){
+				first(a);
+			},
+
+			[],
+			function(a){
+				second(a);
+			}
+		);
+
+		fn('yo');
+
+		return this.calledWith(first, 'yo');
+	});
+
+	add("function bind", function(){
+		var first = this.spy();
+		var bind = {};
+
+		var fn = polymorph(
+			function(){ first.call(this); }
+		);
+
+		fn.call(bind);
+
+		this.calledOn(first, bind);
+	});
+
 	add("function are called dependening of their arguments length", function(){
 		var first = this.spy();
 		var second = this.spy();
