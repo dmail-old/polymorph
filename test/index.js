@@ -8,14 +8,10 @@ export function suite(add){
 
 		var fn = polymorph(
 			[String],
-			function(a){
-				first(a);
-			},
+			first,
 
 			[],
-			function(a){
-				second(a);
-			}
+			second
 		);
 
 		fn('yo');
@@ -28,7 +24,7 @@ export function suite(add){
 		var bind = {};
 
 		var fn = polymorph(
-			function(){ first.call(this); }
+			first
 		);
 
 		fn.call(bind);
@@ -62,11 +58,11 @@ export function suite(add){
 
 		var fn = polymorph(
 			[Boolean],
-			function(a){ boolean(a); },
+			boolean,
 			[String],
-			function(a){ string(a); },
+			string,
 			[Number],
-			function(a){ number(a); }
+			number
 		);
 
 		fn(true);
@@ -86,9 +82,7 @@ export function suite(add){
 
 		var fn = polymorph(
 			[CustomConstructor],
-			function(a){
-				first(a);
-			}
+			first
 		);
 
 		fn(customConstructor);
@@ -103,9 +97,7 @@ export function suite(add){
 
 		var fn = polymorph(
 			[CustomObject],
-			function(a){
-				first(a);
-			}
+			first
 		);
 
 		fn(customObject);
@@ -117,9 +109,7 @@ export function suite(add){
 
 		var fn = polymorph(
 			[,String],
-			function(a, b){
-				first(a, b);
-			}
+			first
 		);
 
 		fn(true, 'bar');
@@ -134,9 +124,7 @@ export function suite(add){
 		var called = false;
 		var fn = polymorph(
 			[String],
-			function(a, b){
-				first(a, b);
-			}
+			first
 		);
 
 		fn('foo', 'bar');
@@ -159,7 +147,7 @@ export function suite(add){
 			}
 		);
 		var spy = this.spy(fn);
-		fn();
+		spy();
 
 		this.threw(spy, {code: 'NOT_ENOUGH_ARGUMENT'});
 	});
@@ -171,7 +159,7 @@ export function suite(add){
 			}
 		);
 		var spy = this.spy(fn);
-		fn('foo');
+		spy('foo');
 
 		this.threw(spy, {code: 'TOO_MUCH_ARGUMENT'});
 	});
