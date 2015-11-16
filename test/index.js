@@ -137,7 +137,7 @@ export function suite(add){
 
 		spy();
 
-		this.threw(spy, {code: 'EMPTY_SIGNATURE'});
+		this.threwWith(spy, {code: 'EMPTY_SIGNATURE'});
 	});
 
 	add("Error code NOT_ENOUGH_ARGUMENT", function(){
@@ -149,7 +149,7 @@ export function suite(add){
 		var spy = this.spy(fn);
 		spy();
 
-		this.threw(spy, {code: 'NOT_ENOUGH_ARGUMENT'});
+		this.threwWith(spy, {code: 'NOT_ENOUGH_ARGUMENT'});
 	});
 
 	add("Error code TOO_MUCH_ARGUMENT", function(){
@@ -161,7 +161,7 @@ export function suite(add){
 		var spy = this.spy(fn);
 		spy('foo');
 
-		this.threw(spy, {code: 'TOO_MUCH_ARGUMENT'});
+		this.threwWith(spy, {code: 'TOO_MUCH_ARGUMENT'});
 	});
 
 	add("Error code INVALID_ARGUMENT", function(){
@@ -174,6 +174,6 @@ export function suite(add){
 		var spy = this.spy(fn);
 		spy(10);
 
-		this.threw(spy, {code: 'INVALID_ARGUMENT'});
+		this.threwWith(spy, {code: 'INVALID_ARGUMENT'});
 	});
 }
